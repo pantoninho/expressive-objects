@@ -3,7 +3,7 @@ const merge = require('deepmerge');
 module.exports = createExpressiveObject;
 
 /**
- * Create an expressive api using chained properties // TODO: better explanation
+ * Create an expressive api using chained properties
  * @param {Array<Object>} api An array of definitions that consist of a path and a value
  */
 function createExpressiveObject(api) {
@@ -39,7 +39,7 @@ function createBranch(branch, value, target) {
 }
 
 /**
- * Injects a property inside an object // TODO: better explanation 
+ * Replaces a property inside an object but merges functions with objects
  * @param {Object} object the object where the property will be injected into
  * @param {String} property the property name
  * @param {Any} value the property value
@@ -59,7 +59,7 @@ function injectProperty(object, property, value) {
 }
 
 /**
- * Transforms an object into a function, keeping all its properties intact // TODO: better explanation
+ * Transforms an object into a function, keeping all its properties intact
  * @param {Object} object The object that will be transformed into a function
  * @param {Function} fn the function this object will become
  */
