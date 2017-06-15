@@ -3,8 +3,13 @@ const expressive = require('./src/expressive');
 module.exports = function(api) {
 
     api = sanitize(api);
-
     return expressive(api);
+};
+
+module.exports.extend = function(object, api) {
+
+    api = sanitize(api);
+    return expressive.extend(object, api);
 };
 
 function sanitize(api) {

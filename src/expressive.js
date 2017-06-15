@@ -1,6 +1,7 @@
 const merge = require('deepmerge');
 
 module.exports = createExpressiveObject;
+module.exports.extend = makeExpressive;
 
 /**
  * Create an expressive api using chained properties
@@ -9,12 +10,16 @@ module.exports = createExpressiveObject;
 function createExpressiveObject(api) {
 
     const obj = {};
+    return makeExpressive(obj, api);
+}
+
+function makeExpressive(object, api) {
 
     api.forEach(definition => {
-        createBranch(definition.path, definition.value, obj);
+        createBranch(definition.path, definition.value, object);
     });
 
-    return obj;
+    return object;
 }
 
 /**
