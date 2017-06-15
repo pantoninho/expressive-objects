@@ -1,12 +1,12 @@
 {
   "name": "expressive-objects",
-  "version": "0.0.1",
-  "description": "",
+  "version": "1.0.0",
+  "description": "create expressive APIs through long property chains",
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha",
     "test:watch": "./node_modules/mocha/bin/_mocha -w",
-    "cover": "istanhul cover _mocha",
+    "cover": "istanbul cover _mocha",
     "codeclimate": "npm run cover && codeclimate-test-reporter < coverage/lcov.info"
   },
   "author": "",
