@@ -39,6 +39,6 @@ const obj = expressive(api);
 console.log(obj.increment.two.by(3)); // 5;
 console.log(obj.increment.two()); // 3;
 console.log(obj.this.is.a.potato); // 'potato';
-console.log(obj.this.aslo.works); // true
+console.log(obj.this.also.works); // true
 ```
 

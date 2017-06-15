@@ -12,13 +12,8 @@ describe('[Expressive Object]', () => {
 
     beforeEach(() => {
         api = [{
-            path: ['hello'],
-            value: function() {
-                return 'world';
-            },
-        }, {
-            path: ['true'],
-            value: true
+            path: ['hello', 'from the world'],
+            value: 'affirmative'
         }, {
             path: 'this.is.a.pointy.path',
             value: 'indeed'
@@ -32,14 +27,11 @@ describe('[Expressive Object]', () => {
 
         const obj = expressive(api);
         obj.should.be.an('object');
-        obj.should.have.all.keys('hello', 'true', 'this', 'you');
-        Object.keys(obj).should.have.lengthOf(4);
+        obj.should.have.all.keys('hello', 'this', 'you');
+        Object.keys(obj).should.have.lengthOf(3);
 
-        obj.hello.should.be.a('function');
-        obj.hello().should.equal('world');
-
-        obj.true.should.be.a('boolean');
-        obj.true.should.be.ok;
+        obj.hello.should.be.a('object');
+        obj.hello.from.the.world.should.equal('affirmative');
 
         obj.this.is.a.pointy.path.should.equal('indeed');
         obj.you.may.also.add.spaces.should.equal('so cool');
@@ -55,20 +47,17 @@ describe('[Expressive Object]', () => {
         }];
 
         obj.should.be.an('object');
-        obj.should.have.all.keys('hello', 'true', 'this', 'you');
-        Object.keys(obj).should.have.lengthOf(4);
+        obj.should.have.all.keys('hello', 'this', 'you');
+        Object.keys(obj).should.have.lengthOf(3);
 
         expressive.extend(obj, plugin);
 
         obj.should.be.an('object');
-        obj.should.have.all.keys('hello', 'true', 'this', 'you', 'i');
-        Object.keys(obj).should.have.lengthOf(5);
+        obj.should.have.all.keys('hello', 'this', 'you', 'i');
+        Object.keys(obj).should.have.lengthOf(4);
 
-        obj.hello.should.be.a('function');
-        obj.hello().should.equal('world');
-
-        obj.true.should.be.a('boolean');
-        obj.true.should.be.ok;
+        obj.hello.should.be.a('object');
+        obj.hello.from.the.world.should.equal('affirmative');
 
         obj.this.is.a.pointy.path.should.equal('indeed');
         obj.you.may.also.add.spaces.should.equal('so cool');
