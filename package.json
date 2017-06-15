@@ -1,15 +1,16 @@
 {
   "name": "expressive-objects",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha"
+    "test": "nyc mocha",
+    "test:watch": "./node_modules/mocha/bin/_mocha -w"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "deepmerge": "^1.4.1",
+    "deepmerge": "^1.4.3",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
@@ -17,6 +18,7 @@
     "eslint": "^4.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.4.2",
+    "nyc": "^11.0.2",
     "sinon": "^2.3.4",
     "sinon-chai": "^2.11.0"
   }

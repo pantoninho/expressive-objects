@@ -1,84 +1,81 @@
-const _ = require('lodash');
-const propProxy = require('./property-proxy');
+const merge = require('deepmerge');
 
 module.exports = createExpressiveObject;
 
+/**
+ * Create an expressive api using chained properties // TODO: better explanation
+ * @param {Array<Object>} api An array of definitions that consist of a path and a value
+ */
 function createExpressiveObject(api) {
 
     const obj = {};
-    api = api.map(definition => {
 
-        const path = typeof definition.path === 'string' ? definition.path.split(/[ .]/) : definition.path;
-
-        if (typeof definition.resolver !== 'function') {
-            throw new Error('Resolver for [' + definition.path + '] is not a function');
-        }
-
-        return {
-            path: path,
-            resolver: definition.resolver
-        };
+    api.forEach(definition => {
+        createBranch(definition.path, definition.value, obj);
     });
 
-    return propProxy(obj, pathFinder(api));
+    return obj;
 }
 
-function pathFinder(api) {
+/**
+ * Creates a branch of properties inside an object, pointing the final one to a value
+ * @param {Array<String>} branch a chain of properties that will be put on the target
+ * @param {Any} value the function that this branch will result into
+ * @param {Object} target the object where this branch will be inserted
+ */
+function createBranch(branch, value, target) {
 
-    const paths = api.map(definition => definition.path);
+    return branch.reduce((container, partial, i, partials) => {
 
-    const propertyAccessHandler = function(path, object, propName) {
-        path = path ? [...path] : [];
-        path.push(propName);
-
-        if (!isValidPath(path, paths)) {
-            return object[propName];
+        if (i === partials.length - 1) {
+            injectProperty(container, partial, value);
+            return target;
         }
 
-        const resolver = pathResolver.bind(null, api, path);
-        const handler = propertyAccessHandler.bind(null, path);
+        container[partial] = container[partial] || {};
+        return container[partial];
 
-        return propProxy(resolver, handler);
-    };
-
-    return propertyAccessHandler.bind(null, []);
+    }, target);
 }
 
+/**
+ * Injects a property inside an object // TODO: better explanation 
+ * @param {Object} object the object where the property will be injected into
+ * @param {String} property the property name
+ * @param {Any} value the property value
+ */
+function injectProperty(object, property, value) {
 
-function pathResolver(api, path, ...args) {
-
-    const resolver = getPathResolution(api, path);
-
-    if (!resolver) {
-        throw new Error('Path ' + path.join('.') + ' not found in the API');
+    if (!object[property]) {
+        object[property] = value;
+        return;
     }
 
-    // TODO: should resolvers always be functions? hm..............
-    return resolver(...args);
+    if (typeof object[property] === 'object' && typeof value === 'function') {
+        value = functionize(object[property], value);
+    }
 
+    object[property] = value;
 }
 
-function isValidPath(partialPath, paths) {
+/**
+ * Transforms an object into a function, keeping all its properties intact // TODO: better explanation
+ * @param {Object} object The object that will be transformed into a function
+ * @param {Function} fn the function this object will become
+ */
+function functionize(object, fn) {
 
-    return paths.some(path => {
-        return partialPath.every((partial, i) => partial === path[i]);
+    // wrap the original fn in order to keep it unmodified
+    const executable = function(...args) {
+        return fn(...args);
+    };
+
+    // clone the original object so the original one is not mutated
+    const clone = merge({}, object, { clone: true });
+
+    Object.keys(clone).forEach(key => {
+        executable[key] = clone[key];
     });
 
+    return executable;
 }
-
-function getPathResolution(api, path) {
-
-    let resolver;
-
-    api.some(definition => {
-
-        if (!_.isEqual(definition.path, path)) {
-            return;
-        }
-
-        resolver = definition.resolver;
-
-    });
-
-    return resolver;
-} 
