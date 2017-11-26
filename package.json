@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "deepmerge": "^1.4.3",
+    "deepmerge": "^2.0.1",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
@@ -20,9 +20,9 @@
     "codeclimate-test-reporter": "^0.5.0",
     "eslint": "^4.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.4.2",
+    "mocha": "^4.0.1",
     "nyc": "^11.0.2",
-    "sinon": "^2.3.4",
+    "sinon": "^4.1.2",
     "sinon-chai": "^2.11.0"
   }
 }
